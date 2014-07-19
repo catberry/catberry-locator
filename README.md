@@ -3,13 +3,20 @@
 
 ##Description
 
-Whole architecture of [Catberry framework](https://github.com/catberry/catberry) is based on [Service Locator pattern](http://en.wikipedia.org/wiki/Service_locator_pattern) and [Dependency Injection](http://en.wikipedia.org/wiki/Dependency_injection).
-It means there is only one service locator in one catberry application and all modules are resolved from this locator when you use "getMiddleware" method on server or "startWhenReady" in browser code.
-Before that moment feel free to register your own modules-services to inject it into catberry modules via DI.
+Whole architecture of [Catberry Framework](https://github.com/catberry/catberry)
+is based on [Service Locator pattern]
+(http://en.wikipedia.org/wiki/Service_locator_pattern) and 
+[Dependency Injection](http://en.wikipedia.org/wiki/Dependency_injection).
+It means there is only one service locator in one Catberry application and all 
+modules are resolved from this Locator when you use `getMiddleware` method in 
+`server.js` or `startWhenReady` in `client.js`.
+Before that moment feel free to register your own modules-services to inject 
+them into Catberry modules via DI.
 
-In Catberry, definition of type is just a string which used like an argument name in constructors following '$' char.
+In Catberry, definition of type is just a string used like an argument name 
+in constructors following `$` character.
 
-If your catberry module's constructor will be like following
+For example your Catberry module's constructor can look like this:
 
 ```javascript
 function Constructor($logger, $uhr, someConfigValue) {
@@ -77,67 +84,57 @@ ServiceLocator.prototype.unregister = function (type) { }
 
 This example demonstrates how to use Service Locator in Catberry Framework.
 
-Using in "client.js" script:
+Using in `client.js` script:
 
 ```javascript
-var ChatServiceClient = require('./lib/ChatServiceClient'),
+var RestApiClient = require('./lib/RestApiClient'),
 // create catberry application instance.
 	catberry = require('catberry'),
-	config = require('./config'),
-	app = catberry.create(config);
+	config = require('./client-config'),
+	cat = catberry.create(config);
 
-// then you could register your external modules to inject into catberry modules.
-app.locator.register('chatServiceClient', ChatServiceClient, config, true);
+// then you could register your components to inject into catberry modules.
+cat.locator.register('restApiClient', RestApiClient, config, true);
 
+// you can register services only before this method cat.startWhenReady()
 // tell catberry to start when HTML document will be ready
-app.startWhenReady();
+cat.startWhenReady();
+
 ```
 
-Using in "server.js" script:
+Using in `server.js` script:
 
 ```javascript
-var ChatServiceClient = require('./lib/ChatServiceClient'),
-	ChatService = require('./lib/ChatService'),
-	catberry = require('catberry');
-
-// if we want to start catberry application using connect
-var http = require('http'),
-	path = require('path'),
-	publicPath = path.join(__dirname, 'public'),
+var catberry = require('catberry'),
+	RestApiClient = require('./lib/RestApiClient'),
 	connect = require('connect'),
-	config = require('./config'),
-// create instance of catberry application and pass config to it
+	config = require('./server-config'),
 	cat = catberry.create(config),
 	app = connect();
 
-// then you could register your external modules to inject into catberry modules.
-cat.locator.register('chatServiceClient', ChatServiceClient, config, true);
+// when you have created instance of Catberry application
+// you can register in Service Locator everything you want.
+cat.locator.register('restApiClient', RestApiClient, config, true);
 
-app.use(connect.cookieParser());
-app.use(connect.session({secret: 'meow'}));
-
-// set our chat service as connect middleware
-var chat = cat.locator.resolveInstance(ChatService, config);
-app.use(chat.middleware());
-
-// and use catberry as connect/express middleware too
+// you can register services only before this method cat.getMiddleware()
 app.use(cat.getMiddleware());
-
-// all non-handled requests by catberry will be passed to next middleware
-// like static files
-app.use(connect.static(publicPath));
 app.use(connect.errorHandler());
 http
 	.createServer(app)
-	.listen(3000);
+	.listen(config.server.port || 3000);
+
 ```
 
 ##Contribution
-If you have found a bug, please create pull request with mocha unit-test which reproduces it or describe all details in issue if you can not implement test.
-If you want to propose some improvements just create issue or pull request but please do not forget to use **npm test** to be sure that you code is awesome.
+If you have found a bug, please create pull request with mocha unit-test which 
+reproduces it or describe all details in issue if you can not implement test.
+If you want to propose some improvements just create issue or pull request but 
+please do not forget to use **npm test** to be sure that you code is awesome.
 
-All changes should satisfy this [Code Style Guide](https://github.com/catberry/catberry/blob/master/docs/code-style.md).
+All changes should satisfy this [Code Style Guide]
+(https://github.com/catberry/catberry/blob/master/docs/code-style-guide.md).
 
-Also your changes should be covered by unit tests using [mocha](https://www.npmjs.org/package/mocha).
+Also your changes should be covered by unit tests using [mocha]
+(https://www.npmjs.org/package/mocha).
 
 Denis Rechkunov <denis.rechkunov@gmail.com>
