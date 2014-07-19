@@ -1,9 +1,9 @@
-#Service Locator[![Build Status](https://travis-ci.org/pragmadash/catberry-locator.png?branch=master)](https://travis-ci.org/pragmadash/catberry-locator)
+#Service Locator[![Build Status](https://travis-ci.org/catberry/catberry-locator.png?branch=master)](https://travis-ci.org/catberry/catberry-locator)
 [![NPM](https://nodei.co/npm/catberry-locator.png)](https://nodei.co/npm/catberry-locator/)
 
 ##Description
 
-Whole architecture of [Catberry framework](https://github.com/pragmadash/catberry) is based on [Service Locator pattern](http://en.wikipedia.org/wiki/Service_locator_pattern) and [Dependency Injection](http://en.wikipedia.org/wiki/Dependency_injection).
+Whole architecture of [Catberry framework](https://github.com/catberry/catberry) is based on [Service Locator pattern](http://en.wikipedia.org/wiki/Service_locator_pattern) and [Dependency Injection](http://en.wikipedia.org/wiki/Dependency_injection).
 It means there is only one service locator in one catberry application and all modules are resolved from this locator when you use "getMiddleware" method on server or "startWhenReady" in browser code.
 Before that moment feel free to register your own modules-services to inject it into catberry modules via DI.
 
@@ -136,7 +136,7 @@ http
 If you have found a bug, please create pull request with mocha unit-test which reproduces it or describe all details in issue if you can not implement test.
 If you want to propose some improvements just create issue or pull request but please do not forget to use **npm test** to be sure that you code is awesome.
 
-All changes should satisfy this [Code Style Guide](https://github.com/pragmadash/catberry/blob/master/docs/code-style.md).
+All changes should satisfy this [Code Style Guide](https://github.com/catberry/catberry/blob/master/docs/code-style.md).
 
 Also your changes should be covered by unit tests using [mocha](https://www.npmjs.org/package/mocha).
 
