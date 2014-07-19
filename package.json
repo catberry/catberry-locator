@@ -1,20 +1,20 @@
 {
 	"name": "catberry-locator",
-	"version": "0.4.0",
+	"version": "1.0.0",
 	"author": "Denis Rechkunov <denis.rechkunov@gmail.com>",
-	"description": "Service locator module for catberry framework",
-	"homepage": "https://github.com/pragmadash/catberry-locator",
+	"description": "Service Locator module for Catberry Framework",
+	"homepage": "https://github.com/catberry/catberry-locator",
 	"keywords": [
 		"catberry", "service locator", "locator", "module",
 		"dependency injection", "IoC", "DI"
 	],
 	"bugs": {
-		"url": "https://github.com/pragmadash/catberry-locator/issues",
+		"url": "https://github.com/catberry/catberry-locator/issues",
 		"email": "denis.rechkunov@gmail.com"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/pragmadash/catberry-locator.git"
+		"url": "git://github.com/catberry/catberry-locator.git"
 	},
 	"main": "./lib/ServiceLocator.js",
 
@@ -35,7 +35,7 @@
 	"licenses": [
 		{
 			"type": "MIT",
-			"url": "https://github.com/pragmadash/catberry-locator/blob/master/LICENSE"
+			"url": "https://github.com/catberry/catberry-locator/blob/master/LICENSE"
 		}
 	]
 }
