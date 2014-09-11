@@ -1,4 +1,4 @@
-#Service Locator[![Build Status](https://travis-ci.org/catberry/catberry-locator.png?branch=master)](https://travis-ci.org/catberry/catberry-locator)
+#Service Locator for Catberry Framework [![Build Status](https://travis-ci.org/catberry/catberry-locator.png?branch=master)](https://travis-ci.org/catberry/catberry-locator) [![Coverage Status](https://coveralls.io/repos/catberry/catberry-locator/badge.png)](https://coveralls.io/r/catberry/catberry-locator)
 [![NPM](https://nodei.co/npm/catberry-locator.png)](https://nodei.co/npm/catberry-locator/)
 
 ##Description
@@ -8,11 +8,11 @@ is based on [Service Locator pattern](http://en.wikipedia.org/wiki/Service_locat
 and [Dependency Injection](http://en.wikipedia.org/wiki/Dependency_injection).
 It means there is only one service locator in one Catberry application and all 
 modules are resolved from this Locator when you use `getMiddleware` method in 
-`server.js` or `startWhenReady` in `client.js`.
+`server.js` or `startWhenReady` in `browser.js`.
 Before that moment feel free to register your own modules-services to inject 
 them into Catberry modules via DI.
 
-In Catberry, definition of type is just a string used like an argument name 
+In Catberry definition of type is just a string used like an argument name 
 in constructors following `$` character.
 
 For example your Catberry module's constructor can look like this:
@@ -83,19 +83,19 @@ ServiceLocator.prototype.unregister = function (type) { }
 
 This example demonstrates how to use Service Locator in Catberry Framework.
 
-Using in `client.js` script:
+Using in `browser.js` script:
 
 ```javascript
 var RestApiClient = require('./lib/RestApiClient'),
 // create catberry application instance.
 	catberry = require('catberry'),
-	config = require('./client-config'),
+	config = require('./browser-config'),
 	cat = catberry.create(config);
 
-// then you could register your components to inject into catberry modules.
+// then you can register your components to inject into catberry modules.
 cat.locator.register('restApiClient', RestApiClient, config, true);
 
-// you can register services only before this method cat.startWhenReady()
+// you can register services only before method cat.startWhenReady()
 // tell catberry to start when HTML document will be ready
 cat.startWhenReady();
 
@@ -115,7 +115,7 @@ var catberry = require('catberry'),
 // you can register in Service Locator everything you want.
 cat.locator.register('restApiClient', RestApiClient, config, true);
 
-// you can register services only before this method cat.getMiddleware()
+// you can register services only before method cat.getMiddleware()
 app.use(cat.getMiddleware());
 app.use(connect.errorHandler());
 http
