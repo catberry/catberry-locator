@@ -1,4 +1,4 @@
-#Service Locator for Catberry Framework [![Build Status](https://travis-ci.org/catberry/catberry-locator.png?branch=master)](https://travis-ci.org/catberry/catberry-locator) [![Coverage Status](https://coveralls.io/repos/catberry/catberry-locator/badge.png)](https://coveralls.io/r/catberry/catberry-locator)
+#Service Locator for Catberry Framework [![Build Status](https://travis-ci.org/catberry/catberry-locator.png?branch=master)](https://travis-ci.org/catberry/catberry-locator) [![Coverage Status](https://coveralls.io/repos/catberry/catberry-locator/badge.png?branch=develop)](https://coveralls.io/r/catberry/catberry-locator?branch=develop)
 [![NPM](https://nodei.co/npm/catberry-locator.png)](https://nodei.co/npm/catberry-locator/)
 
 ##Description
