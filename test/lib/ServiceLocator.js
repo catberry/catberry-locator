@@ -31,7 +31,7 @@
 'use strict';
 
 var assert = require('assert'),
-	ServiceLocator = require('../lib/ServiceLocator');
+	ServiceLocator = require('../../lib/ServiceLocator');
 
 function Constructor($testModule1, testArgument1, $testModule2, testArgument2,
 	$testModule3) {
