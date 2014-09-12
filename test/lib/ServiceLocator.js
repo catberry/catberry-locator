@@ -55,7 +55,6 @@ function TestModule4() {
 }
 
 describe('ServiceLocator', function () {
-
 	describe('#register', function () {
 		it('should throw error if specified type is not a string', function () {
 			var locator = new ServiceLocator();
@@ -89,13 +88,13 @@ describe('ServiceLocator', function () {
 
 	describe('#registerInstance', function () {
 		it('should register single instance for type', function () {
-			var locator = new ServiceLocator();
-			var instance = {};
-			var instance2 = {};
+			var locator = new ServiceLocator(),
+				instance = {},
+				instance2 = {};
 			locator.registerInstance('type', instance);
 			locator.registerInstance('type', instance2);
-			var resolved = locator.resolve('type');
-			var resolved2 = locator.resolve('type');
+			var resolved = locator.resolve('type'),
+				resolved2 = locator.resolve('type');
 			assert.strictEqual(resolved, instance2);
 			assert.strictEqual(resolved2, instance2);
 
@@ -109,20 +108,20 @@ describe('ServiceLocator', function () {
 	describe('#resolve', function () {
 
 		it('should resolve all registered modules', function () {
-			var locator = new ServiceLocator();
-			var rootParameters = {
-				testArgument1: 'Constructor.testArgument1',
-				testArgument2: 'Constructor.testArgument2'
-			};
-			var module1Parameters = {
-				testArgument1: 'TestModule1.testArgument1'
-			};
-			var module2Parameters = {
-				testArgument1: 'TestModule2.testArgument1'
-			};
-			var module3Parameters = {
-				testArgument1: 'TestModule3.testArgument1'
-			};
+			var locator = new ServiceLocator(),
+				rootParameters = {
+					testArgument1: 'Constructor.testArgument1',
+					testArgument2: 'Constructor.testArgument2'
+				},
+				module1Parameters = {
+					testArgument1: 'TestModule1.testArgument1'
+				},
+				module2Parameters = {
+					testArgument1: 'TestModule2.testArgument1'
+				},
+				module3Parameters = {
+					testArgument1: 'TestModule3.testArgument1'
+				};
 			locator.register('root', Constructor, rootParameters);
 			locator.register('testModule1', TestModule1, module1Parameters);
 			locator.register('testModule2', TestModule2, module2Parameters);
@@ -191,8 +190,8 @@ describe('ServiceLocator', function () {
 				var locator = new ServiceLocator();
 				locator.register('type', function () {}, {});
 
-				var instance1 = locator.resolve('type');
-				var instance2 = locator.resolve('type');
+				var instance1 = locator.resolve('type'),
+					instance2 = locator.resolve('type');
 
 				assert.notEqual(instance1, instance2);
 			});
@@ -202,8 +201,8 @@ describe('ServiceLocator', function () {
 				var locator = new ServiceLocator();
 				locator.register('type', function () {}, {}, true);
 
-				var instance1 = locator.resolve('type');
-				var instance2 = locator.resolve('type');
+				var instance1 = locator.resolve('type'),
+					instance2 = locator.resolve('type');
 
 				assert.equal(instance1, instance2);
 			});
@@ -214,7 +213,7 @@ describe('ServiceLocator', function () {
 				assert.strictEqual(test, undefined);
 			});
 
-			var instance = locator.resolve('type');
+			locator.resolve('type');
 		});
 	});
 
@@ -275,8 +274,8 @@ describe('ServiceLocator', function () {
 	describe('#resolveInstance', function () {
 		it('should resolve instance of specified constructor and parameters',
 			function () {
-				var locator = new ServiceLocator();
-				var testArgument = 'testArgumentValue';
+				var locator = new ServiceLocator(),
+					testArgument = 'testArgumentValue';
 
 				function TestModule() {
 
@@ -291,6 +290,18 @@ describe('ServiceLocator', function () {
 				var instance = locator.resolveInstance(ModuleToResolve, {
 					testArgument: testArgument
 				});
+
+				assert.equal(instance instanceof ModuleToResolve, true);
+			});
+
+		it('should resolve instance of empty constructor and parameters',
+			function () {
+				var locator = new ServiceLocator();
+
+				function ModuleToResolve() {
+				}
+
+				var instance = locator.resolveInstance(ModuleToResolve);
 
 				assert.equal(instance instanceof ModuleToResolve, true);
 			});
