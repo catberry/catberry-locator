@@ -1,7 +1,7 @@
-#Service Locator for Catberry Framework [![Build Status](https://travis-ci.org/catberry/catberry-locator.png?branch=master)](https://travis-ci.org/catberry/catberry-locator) [![Coverage Status](https://coveralls.io/repos/catberry/catberry-locator/badge.png?branch=master)](https://coveralls.io/r/catberry/catberry-locator?branch=master)
+# Service Locator for Catberry Framework [![Build Status](https://travis-ci.org/catberry/catberry-locator.png?branch=master)](https://travis-ci.org/catberry/catberry-locator) [![Coverage Status](https://coveralls.io/repos/catberry/catberry-locator/badge.png?branch=master)](https://coveralls.io/r/catberry/catberry-locator?branch=master)
 [![NPM](https://nodei.co/npm/catberry-locator.png)](https://nodei.co/npm/catberry-locator/)
 
-##Description
+## Description
 
 Entire architecture of [Catberry Framework](https://github.com/catberry/catberry)
 is based on [Service Locator pattern](http://en.wikipedia.org/wiki/Service_locator_pattern) 
@@ -79,7 +79,7 @@ ServiceLocator.prototype.resolveInstance = function (constructor, parameters) { 
 ServiceLocator.prototype.unregister = function (type) { }
 ```
 
-##Example
+## Example
 
 This example demonstrates how to use Service Locator in Catberry Framework.
 
@@ -124,7 +124,7 @@ http
 
 ```
 
-##Contribution
+## Contribution
 If you have found a bug, please create pull request with [mocha](https://www.npmjs.org/package/mocha) 
 unit-test which reproduces it or describe all details in an issue if you can not
 implement test. If you want to propose some improvements just create an issue or
