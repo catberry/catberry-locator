@@ -411,6 +411,5 @@ function areTokensEqual(actual, expected) {
 			actual[i].start, expected[i].start
 		);
 		assert.strictEqual(actual[i].end, expected[i].end);
-
 	}
 }
