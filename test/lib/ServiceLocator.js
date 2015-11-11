@@ -33,8 +33,10 @@
 var assert = require('assert'),
 	ServiceLocator = require('../../lib/ServiceLocator');
 
-function Constructor($testModule1, testArgument1, $testModule2, testArgument2,
-	$testModule3) {
+// jscs:disable disallowUnusedParams
+function Constructor(
+		$testModule1, testArgument1, $testModule2, testArgument2, $testModule3
+	) {
 	this.args = arguments;
 }
 
@@ -166,7 +168,7 @@ describe('ServiceLocator', function () {
 				module3Parameters.testArgument1,
 				'Wrong parameter resolution');
 
-			//TestModule4
+			// TestModule4
 			assert.equal(rootModule.args[2].args[2].args.length, 0,
 				'Wrong argument count');
 		});
@@ -222,21 +224,13 @@ describe('ServiceLocator', function () {
 			function () {
 				var locator = new ServiceLocator();
 
-				function Implementation1() {
+				function Implementation1() { }
 
-				}
+				function Implementation2() { }
 
-				function Implementation2() {
+				function Implementation3() { }
 
-				}
-
-				function Implementation3() {
-
-				}
-
-				function AnotherImplementation() {
-
-				}
+				function AnotherImplementation() { }
 
 				locator.register('type', Implementation1);
 				locator.register('type', Implementation2);
@@ -251,7 +245,6 @@ describe('ServiceLocator', function () {
 					'Wrong type resolution');
 				assert.equal(instances[2] instanceof Implementation1, true,
 					'Wrong type resolution');
-
 			});
 
 		it('should return empty array if specified type was not found',
@@ -277,12 +270,10 @@ describe('ServiceLocator', function () {
 				var locator = new ServiceLocator(),
 					testArgument = 'testArgumentValue';
 
-				function TestModule() {
-
-				}
+				function TestModule() { }
 
 				function ModuleToResolve($testType, testArgument) {
-					assert.equal($testType instanceof  TestModule, true);
+					assert.equal($testType instanceof TestModule, true);
 					assert.strictEqual(testArgument, testArgument);
 				}
 
@@ -298,8 +289,7 @@ describe('ServiceLocator', function () {
 			function () {
 				var locator = new ServiceLocator();
 
-				function ModuleToResolve() {
-				}
+				function ModuleToResolve() { }
 
 				var instance = locator.resolveInstance(ModuleToResolve);
 
