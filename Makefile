@@ -1,6 +1,4 @@
 
-SRC = lib/*.js
-
 TESTS = test/lib/*
 
 all: lint test
@@ -8,41 +6,26 @@ all: lint test
 lint:
 	./node_modules/.bin/eslint ./lib
 
-fix-lint:
+lint-fix:
 	./node_modules/.bin/eslint ./lib --fix
 
 test:
 ifeq ($(TRAVIS),true)
 	@echo "Running tests for Travis..."
-	$(MAKE) travis
+	$(MAKE) travis-cov
 else
 	@echo "Running tests..."
-	@NODE_ENV=test ./node_modules/.bin/mocha $(TESTS)
+	./node_modules/.bin/mocha $(TESTS)
 endif
 
 test-cov:
-ifeq ($(TRAVIS),true)
-	@echo "Getting coverage for Travis..."
-	@NODE_ENV=test node ./node_modules/.bin/istanbul cover \
-		./node_modules/.bin/_mocha \
-		--harmony-generators \
-		--report lcovonly \
-		-- -u exports \
-		$(TESTS)
-else
 	@echo "Getting coverage report..."
-	@NODE_ENV=test node ./node_modules/.bin/istanbul cover \
-		./node_modules/.bin/_mocha \
-		--harmony-generators \
-		-- -u exports \
-		$(TESTS) \
-		--bail
-endif
+	./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha $(TESTS)
 
-send-cov: test-cov
-	cat ./coverage/lcov.info | ./node_modules/.bin/codecov
+travis-cov:
+	@echo "Getting coverage for Travis..."
+	./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- $(TESTS) -R spec && ./node_modules/.bin/codecov
 
-travis: send-cov
 clean:
 	rm -rf coverage
 
