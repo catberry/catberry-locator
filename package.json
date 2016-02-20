@@ -8,10 +8,9 @@
 		"catberry",
 		"service locator",
 		"locator",
-		"module",
-		"dependency injection",
-		"IoC",
-		"DI"
+		"registry",
+		"modules",
+		"IoC"
 	],
 	"bugs": {
 		"url": "https://github.com/catberry/catberry-locator/issues",
