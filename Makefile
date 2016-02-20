@@ -17,9 +17,7 @@ ifeq ($(TRAVIS),true)
 	$(MAKE) travis
 else
 	@echo "Running tests..."
-	@NODE_ENV=test ./node_modules/.bin/mocha \
-		$(TESTS) \
-		--bail
+	@NODE_ENV=test ./node_modules/.bin/mocha $(TESTS)
 endif
 
 test-cov:
@@ -30,8 +28,7 @@ ifeq ($(TRAVIS),true)
 		--harmony-generators \
 		--report lcovonly \
 		-- -u exports \
-		$(TESTS) \
-		--bail
+		$(TESTS)
 else
 	@echo "Getting coverage report..."
 	@NODE_ENV=test node ./node_modules/.bin/istanbul cover \
