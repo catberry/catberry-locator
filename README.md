@@ -1,127 +1,201 @@
-# Service Locator for Catberry Framework [![Build Status](https://travis-ci.org/catberry/catberry-locator.png?branch=master)](https://travis-ci.org/catberry/catberry-locator) [![codecov.io](http://codecov.io/github/catberry/catberry-locator/coverage.svg?branch=master)](http://codecov.io/github/catberry/catberry-locator?branch=master)
-[![NPM](https://nodei.co/npm/catberry-locator.png)](https://nodei.co/npm/catberry-locator/)
+# Service Locator for Catberry Framework
+
+[![Build Status](https://travis-ci.org/catberry/catberry-locator.svg?branch=master)](https://travis-ci.org/catberry/catberry-locator) [![codecov.io](http://codecov.io/github/catberry/catberry-locator/coverage.svg?branch=master)](http://codecov.io/github/catberry/catberry-locator?branch=master)
 
 ## Description
 
-Entire architecture of [Catberry Framework](https://github.com/catberry/catberry)
-is based on [Service Locator pattern](http://en.wikipedia.org/wiki/Service_locator_pattern) 
-and [Dependency Injection](http://en.wikipedia.org/wiki/Dependency_injection).
-It means there is only one service locator in a Catberry application and all
-modules are resolved from this locator when you use `getMiddleware` method in
-`server.js` or `startWhenReady` in `browser.js`.
-Before that moment feel free to register your own modules-services to inject 
-them into Catberry modules via DI.
+The entire architecture of the [Catberry Framework](https://github.com/catberry/catberry)
+is based on [Service Locator pattern](http://en.wikipedia.org/wiki/Service_locator_pattern).
+It means that there is only one Service Locator (module registry)
+in a Catberry application and all application's and framework's modules are
+resolved from the locator when you start the application.
 
-In Catberry definition of type is just a string used like an argument name 
-in constructors following `$` character.
+In case of Catberry Framework, starting an application means to
+call `getMiddleware` method in `server.js` or `startWhenReady`
+in `browser.js`. Before that moment feel free to register your own
+modules-services into Service Locator.
 
-For example your Catberry module's constructor can look like this:
+## Usage
+
+### Registering your Implementations
+
+For example, you have a class that implement something:
 
 ```javascript
-function Constructor($logger, $uhr, someConfigValue) {
-	// here logger and uhr instances will be accessible
-	// via dependency injection from service locator
-	// someConfigValue will be accessible from startup config object
-	// via dependency injection too
+class Cat {
+	// constructor always has the only argument – the Service Locator.
+	constructor(locator) {
+		this.berry = locator.resolve('berry');
+	}
 }
 ```
 
-Catberry's Service Locator implementation has following methods:
+And you might have an "old style" class definition using constructor and prototype:
 
 ```javascript
-/**
- * Registers new type in service locator.
- * @param {string} type Type name, which will be alias in other constructors.
- * @param {Function} constructor Constructor which
- * initializes instance of specified type.
- * @param {Object?} parameters Set of named parameters
- * which will be also injected.
- * @param {boolean?} isSingleton If true every resolve will return
- * the same instance.
- */
-ServiceLocator.prototype.register = function (type, constructor, parameters, isSingleton){ }
-
-/**
- * Registers single instance for specified type.
- * @param {string} type Type name.
- * @param {Object} instance Instance to register.
- */
-ServiceLocator.prototype.registerInstance = function (type, instance) { }
-
-/**
- * Resolves last registered implementation by type name
- * including all its dependencies recursively.
- * @param {string} type Type name.
- * @returns {Object} Instance of specified type.
- */
-ServiceLocator.prototype.resolve = function (type) { }
-
-/**
- * Resolves all registered implementations by type name
- * including all dependencies recursively.
- * @param {string} type Type name.
- * @returns {Array} Array of instances specified type.
- */
-ServiceLocator.prototype.resolveAll = function (type) { }
-
-/**
- * Resolves instance of specified constructor including dependencies.
- * @param {Function} constructor Constructor for instance creation.
- * @param {Object?} parameters Set of its parameters values.
- * @returns {Object} Instance of specified constructor.
- */
-ServiceLocator.prototype.resolveInstance = function (constructor, parameters) { }
-
-/**
- * Unregisters all registrations of specified type.
- * @param {string} type Type name.
- */
-ServiceLocator.prototype.unregister = function (type) { }
+// constructor always has the only argument – the Service Locator.
+function Berry(locator) {
+	// config is always registered in a Catberry application.
+	this.berryType = locator.resolve('config').berryType;
+}
 ```
 
-## Example
+So, you need to register these implementations into the locator
+before starting an application.
 
-This example demonstrates how to use Service Locator in Catberry Framework.
-
-Using in `browser.js` script:
+Registering in `browser.js` script:
 
 ```javascript
-var RestApiClient = require('./lib/RestApiClient'),
-// create catberry application instance.
-	catberry = require('catberry'),
-	config = require('./browser-config'),
-	cat = catberry.create(config);
+const catberry = require('catberry');
+const config = require('./browser-config');
+const cat = catberry.create(config);
 
-// then you can register your components to inject into catberry modules.
-cat.locator.register('restApiClient', RestApiClient, config, true);
+// when you have created an instance of the Catberry application
+// you can register your modules in the Service Locator.
+cat.locator.register('cat', Cat);
+cat.locator.register('berry', Berry);
 
-// you can register services only before method cat.startWhenReady()
-// tell catberry to start when HTML document will be ready
+// you can register services only before the cat.startWhenReady() method is called
 cat.startWhenReady();
-
 ```
 
-Using in `server.js` script:
+Registering in `server.js` script:
 
 ```javascript
-var catberry = require('catberry'),
-	RestApiClient = require('./lib/RestApiClient'),
-	connect = require('connect'),
-	config = require('./server-config'),
-	cat = catberry.create(config),
-	app = connect();
+const catberry = require('catberry');
+const config = require('./server-config');
+const cat = catberry.create(config);
+const connect = require('connect');
+const http = require('http');
+const app = connect();
 
-// when you have created instance of Catberry application
-// you can register in Service Locator everything you want.
-cat.locator.register('restApiClient', RestApiClient, config, true);
+// when you have created an instance of the Catberry application
+// you can register your modules in the Service Locator.
+cat.locator.register('cat', Cat);
+cat.locator.register('berry', Berry);
 
-// you can register services only before method cat.getMiddleware()
+// you can register services only before cat.getMiddleware() method is called
 app.use(cat.getMiddleware());
 app.use(connect.errorHandler());
 http
 	.createServer(app)
 	.listen(config.server.port || 3000);
 
+```
+
+All cat-components and stores in a Catberry application are registered
+automatically into the Service Locator. So, you don't need to do that on your own.
+
+### Using Implementations
+
+As far as every module's constructor has the only argument – the Service Locator,
+you can resolve all modules-dependencies while creating new instances of these
+modules using `locator` argument:
+
+```javascript
+class Cat {
+	// constructor always has the only argument – the Service Locator.
+	constructor(locator) {
+		// you custom modules
+		this.berry = locator.resolve('berry');
+		// Catberry's modules
+		this.config = locator.resolve('config');
+		this.logger = locator.resolve('logger');
+	}
+}
+```
+
+Also, you can share the same instance across all modules in the application:
+
+```javascript
+cat.locator.register('cat', Cat);
+// Berry will be a singleton
+cat.locator.register('berry', Berry, true);
+
+const cat1 = cat.locator.resolve('cat');
+const cat2 = cat.locator.resolve('cat');
+
+console.log(cat1.berry === cat2.berry); // true
+```
+
+Or if you have an instance itself instead of its constructor you can do following:
+
+```javascript
+cat.locator.register('cat', Cat);
+// Berry is registered as an instance
+cat.locator.registerInstance('berry', {berryType: 'black'});
+
+const cat1 = cat.locator.resolve('cat');
+const cat2 = cat.locator.resolve('cat');
+
+console.log(cat1.berry === cat2.berry); // true
+```
+
+Another possible options is to register a list of implementations and to resolve
+all the instances as a list:
+
+```javascript
+cat.locator.register('cat', BlackCat);
+cat.locator.register('cat', WhiteCat);
+cat.locator.register('cat', OrangeCat);
+
+const allTheCats = cat.locator.resolveAll('cat');
+
+console.log(allTheCats[0] instanceof OrangeCat); // true
+console.log(allTheCats[1] instanceof WhiteCat); // true
+console.log(allTheCats[2] instanceof BlackCat); // true
+```
+
+Please keep in mind that the last registered implementation will be the first in
+the resolved list.
+
+### Interface
+
+Catberry's Service Locator implementation has following methods:
+
+```javascript
+/**
+ * Implements a Service Locator pattern.
+ */
+class ServiceLocator {
+	/**
+	 * Registers a new type name in the service locator.
+	 * @param {string} type The type name used as a key for resolving instances.
+	 * @param {Function} implementation The implementation (constructor or class)
+	 * which creates instances of the specified type name.
+	 * @param {boolean?} isSingleton If true then the only instance will
+	 * be created on the first "resolve" call and next calls will
+	 * return this instance.
+	 */
+	register(type, implementation, isSingleton) {}
+
+	/**
+	 * Registers a single instance for the specified type.
+	 * @param {string} type The type name for resolving the instance.
+	 * @param {Object} instance The instance to register.
+	 */
+	registerInstance(type, instance) {}
+
+	/**
+	 * Resolves the last registered implementation by the type name.
+	 * @param {string} type The type name to resolve.
+	 * @returns {Object} The instance of the specified type name.
+	 */
+	resolve(type) {}
+
+	/**
+	 * Resolves all registered implementations by the type name.
+	 * @param {string} type The type name for resolving instances.
+	 * @returns {Array} The list of instances of the specified type name.
+	 */
+	resolveAll(type) {}
+
+	/**
+	 * Unregisters all registrations of the specified type name.
+	 * @param {string} type The type name for deleting the registrations.
+	 */
+	unregister(type) {}
+}
 ```
 
 ## Contributing
