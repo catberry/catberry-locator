@@ -24,12 +24,12 @@
 	"main": "./lib/ServiceLocator.js",
 	"devDependencies": {
 		"istanbul": "~0.4.0",
-		"codecov.io": "~0.1.6",
-		"mocha": "^2.3.3",
+		"codecov": "^1.0.1",
+		"mocha": "^2.4.5",
 		"eslint": "^2.0.0"
 	},
 	"engines": {
-		"node": ">=5"
+		"node": ">=4"
 	},
 	"scripts": {
 		"test": "make"
