@@ -147,4 +147,40 @@ describe('ServiceLocator', function() {
 			});
 		});
 	});
+
+	describe('#has', function() {
+		it('should return true when it has the registered singleton implementation type by the name', function() {
+			class Implementation1 { }
+
+			locator.register('type', Implementation1, true);
+
+			const has = locator.has('type');
+			assert.strictEqual(has, true);
+		});
+
+		it('should return true when it has the registered type by the name', function() {
+			class Implementation1 { }
+
+			locator.register('type', Implementation1);
+
+			const has = locator.has('type');
+			assert.strictEqual(has, true);
+		});
+
+		it('should return true when it has multiple the registered implementations of the type name', function() {
+			class Implementation1 { }
+			function Implementation2() { }
+
+			locator.register('type', Implementation1);
+			locator.register('type', Implementation2);
+
+			const has = locator.has('type');
+			assert.strictEqual(has, true);
+		});
+
+		it('should return false when it does not have the registered type by the name', function() {
+			const has = locator.has('not exists');
+			assert.strictEqual(has, false);
+		});
+	});
 });
