@@ -1,6 +1,6 @@
 {
 	"name": "catberry-locator",
-	"version": "2.1.0",
+	"version": "2.2.0",
 	"author": "Denis Rechkunov <denis.rechkunov@gmail.com>",
 	"description": "Service Locator for Catberry Framework",
 	"homepage": "https://github.com/catberry/catberry-locator",
@@ -24,8 +24,8 @@
 	"devDependencies": {
 		"istanbul": "~0.4.0",
 		"codecov": "^1.0.1",
-		"mocha": "^2.4.5",
-		"eslint": "^2.0.0"
+		"mocha": "^3.0.2",
+		"eslint": "^3.3.1"
 	},
 	"engines": {
 		"node": ">=4"
